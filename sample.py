@@ -43,68 +43,7 @@ with col2:
         st.markdown("<p style='text-align:justify;'>We've harnessed the power of sentiment analysis to decode the emotions embedded within Amazon Food reviews. Our platform is a gateway to a deeper understanding of customer experiences, allowing you to navigate the diverse landscape of culinary delights with confidence.</p>", unsafe_allow_html=True)
 
     with tabs[1]:          
-        with open('random_forest_model_SA.pkl', 'rb') as file:
-            rf_model = pickle.load(file)
-            
-        with open('LR_model_SA.pkl', 'rb') as file:
-            lr_model = pickle.load(file)
-            
-        with open('vectorizer_SA.pkl', 'rb') as file:
-            tf_idf_vect = pickle.load(file)
-
-        stopwords= set(['br', 'the', 'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've",\
-                    "you'll", "you'd", 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', \
-                    'she', "she's", 'her', 'hers', 'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their',\
-                    'theirs', 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', "that'll", 'these', 'those', \
-                    'am', 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does', \
-                    'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while', 'of', \
-                    'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during', 'before', 'after',\
-                    'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over', 'under', 'again', 'further',\
-                    'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any', 'both', 'each', 'few', 'more',\
-                    'most', 'other', 'some', 'such', 'only', 'own', 'same', 'so', 'than', 'too', 'very', \
-                    's', 't', 'can', 'will', 'just', 'don', "don't", 'should', "should've", 'now', 'd', 'll', 'm', 'o', 're', \
-                    've', 'y', 'ain', 'aren', "aren't", 'couldn', "couldn't", 'didn', "didn't", 'doesn', "doesn't", 'hadn',\
-                    "hadn't", 'hasn', "hasn't", 'haven', "haven't", 'isn', "isn't", 'ma', 'mightn', "mightn't", 'mustn',\
-                    "mustn't", 'needn', "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 'wasn', "wasn't", 'weren', "weren't", \
-                    'won', "won't", 'wouldn', "wouldn't"])
-
-        def decontracted(phrase):
-            # specific
-            phrase = re.sub(r"won't", "will not", phrase)
-            phrase = re.sub(r"can\'t", "can not", phrase)
-
-            # general
-            phrase = re.sub(r"n\'t", " not", phrase)
-            phrase = re.sub(r"\'re", " are", phrase)
-            phrase = re.sub(r"\'s", " is", phrase)
-            phrase = re.sub(r"\'d", " would", phrase)
-            phrase = re.sub(r"\'ll", " will", phrase)
-            phrase = re.sub(r"\'t", " not", phrase)
-            phrase = re.sub(r"\'ve", " have", phrase)
-            phrase = re.sub(r"\'m", " am", phrase)
-            return phrase
-
-        def predict_sentiment(model, sentence):
-            sentence = re.sub(r"http\S+", "", sentence)
-            sentence = BeautifulSoup(sentence, 'lxml').get_text()
-            sentence = decontracted(sentence)
-            sentence = re.sub("\S*\d\S*", "", sentence).strip()
-            sentence = re.sub('[^A-Za-z]+', ' ', sentence)
-            sentence = ' '.join(e.lower() for e in sentence.split() if e.lower() not in stopwords)
-
-            text_vector = tf_idf_vect.transform([sentence])
-            
-            if model == 'LR':
-                prob = lr_model.predict_proba(text_vector)
-                predicted_class = lr_model.predict(text_vector)
-            elif model== 'RF':
-                prob = rf_model.predict_proba(text_vector)
-                predicted_class = rf_model.predict(text_vector)
-            
-            
-            class_label = "Positive" if predicted_class[0] == 1 else "Negative"
-            
-            return class_label, prob.max()+0.2
+        
 
         input_text = st.text_input("Please type in your feedback here",placeholder="Type your feedback here...")
         arrow_clicked = st.button("Submit")
@@ -143,8 +82,8 @@ with col2:
             
 
             
-            model='RF'
-            class_label,sentiment_strength=predict_sentiment(model,input_text)
+            #model='RF'
+            #class_label,sentiment_strength=predict_sentiment(model,input_text)
             testimonial = TextBlob(input_text)
             polarity = testimonial.sentiment.polarity
             sentiment_strength = abs(polarity)
