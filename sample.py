@@ -43,13 +43,13 @@ with col2:
         st.markdown("<p style='text-align:justify;'>We've harnessed the power of sentiment analysis to decode the emotions embedded within Amazon Food reviews. Our platform is a gateway to a deeper understanding of customer experiences, allowing you to navigate the diverse landscape of culinary delights with confidence.</p>", unsafe_allow_html=True)
 
     with tabs[1]:          
-        with open('/Users/sahanamanjunath/Downloads/random_forest_model_SA.pkl', 'rb') as file:
+        with open('random_forest_model_SA.pkl', 'rb') as file:
             rf_model = pickle.load(file)
             
-        with open('/Users/sahanamanjunath/Downloads/LR_model_SA.pkl', 'rb') as file:
+        with open('LR_model_SA.pkl', 'rb') as file:
             lr_model = pickle.load(file)
             
-        with open('/Users/sahanamanjunath/Downloads/vectorizer_SA.pkl', 'rb') as file:
+        with open('vectorizer_SA.pkl', 'rb') as file:
             tf_idf_vect = pickle.load(file)
 
         stopwords= set(['br', 'the', 'i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've",\
